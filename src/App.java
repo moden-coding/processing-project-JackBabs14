@@ -129,7 +129,7 @@ public class App extends PApplet {
         vertex(100, 200);
         endShape();
 
-       // With flag
+       // With flags
 
         // line(300, groundLine, 300, 0);
         // line(600, 0, 600, groundLine);
