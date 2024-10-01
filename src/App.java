@@ -52,14 +52,123 @@ public class App extends PApplet {
             runGame();
         }
             }
-            
         
 
     void runGame() {
 
         background(150);
+        stroke(125);
+        strokeWeight(3);
 
+        stroke (0);
+        fill (75);
+        beginShape();
+        vertex(825, 70);
+        vertex(900, 70);
+        vertex(900, groundLine);
+        vertex(750, groundLine);
+        vertex(750, 300); 
+        vertex(775, 305);
+        vertex(800, 295);
+        vertex(825, 307);
+        vertex(831, 245);
+        vertex(826, 180);
+        vertex(830, 150);
+        vertex(823, 90);
+        vertex(825, 70);
+        endShape();
+
+        fill(100);
+        beginShape();
+        vertex(725, groundLine - 200);
+        vertex(650, groundLine - 200);
+        vertex(650, groundLine);
+        vertex(850, groundLine);
+        vertex(850, groundLine - 100);
+        vertex(833, groundLine - 98);
+        vertex(814, groundLine - 95);
+        vertex(792, groundLine - 97);
+        vertex(765, groundLine - 101);
+        vertex(730, groundLine - 102);
+        vertex(725, groundLine - 115);
+        vertex(722, groundLine - 145);
+        vertex(724, groundLine - 175);
+        vertex(725, groundLine - 200);
+        endShape();
+       
+        stroke(0);
+        strokeWeight(3);
+        fill(80);
+        beginShape();
+        vertex(350, 150);
+        vertex(350, groundLine);
+        vertex(525, groundLine);
+        vertex(525, 150);
+        vertex(505, 155);
+        vertex(480, 157);
+        vertex(430, 156);
+        vertex(403, 159);
+        vertex(370, 156);
+        vertex(350, 150);
+        endShape();
+
+        stroke(0);
+        strokeWeight(3);
+        fill (50);
+        rect(50, 100, 100, groundLine - 100);
+        fill (100);
+        beginShape();
+        vertex(100, 200);
+        vertex(100, groundLine);
+        vertex(275, groundLine);
+        vertex(275, 350);
+        vertex(230, 330);
+        vertex(200, 295);
+        vertex(150, 275);
+        vertex(145, 215);
+        vertex(100, 200);
+        endShape();
+
+       // With flag
+
+        // line(300, groundLine, 300, 0);
+        // line(600, 0, 600, groundLine);
+        // line(690, groundLine - 200, 690, groundLine - 250);
+        // strokeWeight(1);
+        // fill (238, 22, 31);
+        // rect(640, groundLine - 250, 50, 30);
+        // fill (255);
+        // rect(640, groundLine - 242, 50, 14);
+        // stroke(0, 167, 80);
+        // fill(0, 167, 80);
+        // triangle(665, groundLine- 239, 663, groundLine - 234, 667, groundLine - 234);
+        // rect(664, groundLine - 234, 2, 3);
+        // strokeWeight(1);
+        // stroke(0,56,184);
+        // fill(0,56,184);
+        // rect(527, 250, 50, 30);
+        // fill(255);
+        // rect(527, 258, 50, 14);
+        // strokeWeight(2);
+        // triangle(552, 261, 555, 266, 549, 266);
+        // triangle(552, 269, 555, 264, 549, 264);
+        // strokeWeight(2);
+        // stroke (255);
+        // line(527, 250, 577, 250);
+        // line(527, 280, 577, 280);
+        // line(125, 100, 125, 25);
+        // strokeWeight(1);
+        // fill(0);
+        // rect(125, 25, 50, 30);
+        // fill(255);
+        // rect(125, 35, 50, 10);
+        // fill(0, 151, 54);
+        // rect(125, 45, 50, 10);
+        // fill(238, 42, 53);
+        // triangle(125, 25, 125, 55, 138, 40);
         
+
+
         stroke(0);
         strokeWeight(6);
         line(0, groundLine, 900, groundLine);
@@ -227,6 +336,8 @@ public class App extends PApplet {
         text("You never got a chance to hug your mom again", 450, 300);
         text("or tell your dad and brother goodbye.", 450, 400);
         text("If only you had stopped this war from starting.", 450, 550);
+        textSize(32);
+        text("Press space bar to reset", 450, 650);
     }
 
 void displayIntro() {
@@ -237,12 +348,12 @@ void displayIntro() {
     textSize(50);
     text("Hello!", 450, 100);
     textSize(32);
-    text("Some radical terrorists took over your country's government", 450, 150);
+    text("Some extremist tyrants took over your country's government", 450, 150);
     text("and they went to war with the country right next you yours.", 450, 200);
     text("The city where you were born and raised in is being bombed.", 450, 250);
     text("Survive the war so you can hug your family again.", 450, 350);
     text("and hopefully after the war life will get good like it was before.", 450, 400);
-    text("Dodge the falling bombs", 450, 600);
+    text("Dodge the falling bombs using the arros or the A and D keys", 450, 600);
     text("Press Enter to begin the game", 450, 650);
 }
 
@@ -251,8 +362,28 @@ public void keyPressed() {
     if (keyCode == ENTER) {
             gameStart = true;
         }
+
+        if (keyCode == ' ') {
+            gameEnded = false;
+            gameStart = false;
+            characterx = 364;
+            charactery = 700 - 150;
+            speed = 5;
+            facingLeft = true;
+            for (int i = 0; i < bombX.length; i++) {
+                bombY[i] = 0;
+                verticalSpeed[i] = 0;
+                hasHitGround[i] = false;
+                isBombVisible[i] = true;
+                bombHitGroundTime[i] = 0;
+            }
+            gameStartTime = 0;
+            gravity = 0.3f;
+            
+        }
         
     }
+
 
 }
 
