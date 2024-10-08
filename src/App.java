@@ -41,7 +41,7 @@ public class App extends PApplet {
     }
 
     public void settings() {
-        size(900, 700);
+        size(800, 600);
     }
 
     public void draw() {
@@ -129,83 +129,6 @@ public class App extends PApplet {
         vertex(100, 200);
         endShape();
 
-       // With flags
-
-        // line(300, groundLine, 300, 0);
-        // line(600, 0, 600, groundLine);
-        // line(690, groundLine - 200, 690, groundLine - 250);
-        // strokeWeight(1);
-        // fill (238, 22, 31);
-        // rect(640, groundLine - 250, 50, 30);
-        // fill (255);
-        // rect(640, groundLine - 242, 50, 14);
-        // stroke(0, 167, 80);
-        // fill(0, 167, 80);
-        // triangle(665, groundLine- 239, 663, groundLine - 234, 667, groundLine - 234);
-        // rect(664, groundLine - 234, 2, 3);
-        // strokeWeight(1);
-        // stroke(0,56,184);
-        // fill(0,56,184);
-        // rect(527, 250, 50, 30);
-        // fill(255);
-        // rect(527, 258, 50, 14);
-        // strokeWeight(2);
-        // triangle(552, 261, 555, 266, 549, 266);
-        // triangle(552, 269, 555, 264, 549, 264);
-        // strokeWeight(2);
-        // stroke (255);
-        // line(527, 250, 577, 250);
-        // line(527, 280, 577, 280);
-        // line(125, 100, 125, 25);
-        // strokeWeight(1);
-        // fill(0);
-        // rect(125, 25, 50, 30);
-        // fill(255);
-        // rect(125, 35, 50, 10);
-        // fill(0, 151, 54);
-        // rect(125, 45, 50, 10);
-        // fill(238, 42, 53);
-        // triangle(125, 25, 125, 55, 138, 40);
-        
-
-
-        stroke(0);
-        strokeWeight(6);
-        line(0, groundLine, 900, groundLine);
-
-        if (gameStart && gameStartTime == 0) {
-            gameStartTime = millis();
-        }
-
-            if (millis() - gameStartTime > timeThreshold) {
-                gravity = 0.4f;
-                int bt1 = 450;
-                int bt2 = 900;
-                int bt3 = 700;
-                int bt4 = 1000;
-                int bt5 = 1750;
-                int bt6 = 1100;
-            }
-
-            if (millis() - gameStartTime > timeThreshhold2) {
-                gravity = 0.5f;
-                int bt1 = 400;
-                int bt2 = 750;
-                int bt3 = 500;
-                int bt4 = 750;
-                int bt5 = 1500;
-                int bt6 = 1000;
-            }
-
-            if (millis() - gameStartTime > timeThreshhold3) {
-                gravity = 0.6f;
-                int bt1 = 300;
-                int bt2 = 500;
-                int bt3 = 450;
-                int bt4 = 600;
-                int bt5 = 1250;
-                int bt6 = 750;
-            }
 
 
         if (!gameEnded) { 
@@ -255,6 +178,13 @@ public class App extends PApplet {
                 characterx += speed;
                 facingLeft = false;
             }
+        }
+
+        if (characterx < 0) {
+            characterx = 0;
+        }
+        if (characterx > width - 25) {
+            characterx = width - 25;
         }
     }
 
@@ -329,15 +259,12 @@ public class App extends PApplet {
 
         fill(255, 0, 0);
         textAlign(CENTER);
-        textSize(100);
-        text("You died!", 450, 200);
-        fill(255);
-        textSize(42);
-        text("You never got a chance to hug your mom again", 450, 300);
-        text("or tell your dad and brother goodbye.", 450, 400);
-        text("If only you had stopped this war from starting.", 450, 550);
+        textSize(150);
+        text("You died!", 400, 300);
+        fill(255);        
+
         textSize(32);
-        text("Press space bar to reset", 450, 650);
+        text("Press space bar to reset", 400, 550);
     }
 
 void displayIntro() {
@@ -345,16 +272,14 @@ void displayIntro() {
 
     fill(255);
     textAlign(CENTER);
-    textSize(50);
-    text("Hello!", 450, 100);
-    textSize(32);
-    text("Some extremist tyrants took over your country's government", 450, 150);
-    text("and they went to war with the country right next you yours.", 450, 200);
-    text("The city where you were born and raised in is being bombed.", 450, 250);
-    text("Survive the war so you can hug your family again.", 450, 350);
-    text("and hopefully after the war life will get good like it was before.", 450, 400);
-    text("Dodge the falling bombs using the arros or the A and D keys", 450, 600);
-    text("Press Enter to begin the game", 450, 650);
+    textSize(100);
+    text("Hello!", 400, 150);
+    text("Mission: Survive", 400, 250);
+    text("Dont get bombed", 400, 350);
+
+    textSize(30);
+    text("Dodge the falling bombs using the arrows or the A and D keys", 400, 500);
+    text("Press Enter to begin the game", 400, 550);
 }
 
 public void keyPressed() {
