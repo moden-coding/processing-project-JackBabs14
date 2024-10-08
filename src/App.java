@@ -8,24 +8,24 @@ public class App extends PApplet {
 
     float groundLine = 700 - 147 + 45;
 
-    float characterx = 364;
+    float characterx = 275;
     float charactery = 700 - 150;
     float speed = 5;
     boolean facingLeft = true;
 
-    float[] bombX = {5, 100, 250, 355, 425, 500, 600, 750, 855}; 
-    float[] bombY = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-    float[] verticalSpeed = {0, 0, 0, 0, 0, 0, 0, 0, 0}; 
-    boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false};
-    boolean[] isBombVisible = {true, true, true, true, true, true, true, true, true};
-    int[] bombHitGroundTime = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    float[] bombX = {5, 100, 175, 250, 300, 355, 425, 500, 600, 750, 800}; 
+    float[] bombY = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+    float[] verticalSpeed = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
+    boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false, false, false};
+    boolean[] isBombVisible = {true, true, true, true, true, true, true, true, true, true, true};
+    int[] bombHitGroundTime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int bt1 = 500;
     int bt2 = 1000;
     int bt3 = 750;
     int bt4 = 1100;
     int bt5 = 2000;
     int bt6 = 1250;
-    int[] bombResetTimes = {bt1, bt2, bt3, bt4, bt5, bt6, bt2, bt1, bt4};
+    int[] bombResetTimes = {bt1, bt2, bt4, bt6, bt3, bt4, bt5, bt6, bt2, bt1, bt4};
     float gravity = 0.3f;
 
     int gameStartTime = 0;
@@ -264,7 +264,7 @@ public class App extends PApplet {
         fill(255);        
 
         textSize(32);
-        text("Press space bar to reset", 400, 550);
+        text("Press Enter to reset", 400, 550);
     }
 
 void displayIntro() {
@@ -284,11 +284,11 @@ void displayIntro() {
 
 public void keyPressed() {
 
-    if (keyCode == ENTER) {
+    if (keyCode == ENTER  && !gameEnded) {
             gameStart = true;
         }
 
-        if (keyCode == ' ') {
+        if (keyCode == ENTER && gameEnded == true) {
             gameEnded = false;
             gameStart = false;
             characterx = 364;
@@ -296,7 +296,7 @@ public void keyPressed() {
             speed = 5;
             facingLeft = true;
             for (int i = 0; i < bombX.length; i++) {
-                bombY[i] = 0;
+                bombY[i] = 1000;
                 verticalSpeed[i] = 0;
                 hasHitGround[i] = false;
                 isBombVisible[i] = true;
