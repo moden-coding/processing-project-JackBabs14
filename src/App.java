@@ -29,6 +29,7 @@ public class App extends PApplet {
     float gravity = 0.3f;
 
     int gameStartTime = 0;
+    int time = 0;
     int timeThreshold = 7500;
     int timeThreshhold2 = 15000;
     int timeThreshhold3 = 25000;
@@ -56,6 +57,8 @@ public class App extends PApplet {
 
     void runGame() {
 
+        time = (millis() - gameStartTime);
+        
         background(150);
         stroke(125);
         strokeWeight(3);
@@ -129,6 +132,9 @@ public class App extends PApplet {
         vertex(100, 200);
         endShape();
 
+        fill (0);
+        textSize(35);
+        text(time, 730, 25);
 
 
         if (!gameEnded) { 
@@ -286,6 +292,7 @@ public void keyPressed() {
 
     if (keyCode == ENTER  && !gameEnded) {
             gameStart = true;
+            gameStartTime = millis();
         }
 
         if (keyCode == ENTER && gameEnded == true) {
@@ -304,7 +311,7 @@ public void keyPressed() {
             }
             gameStartTime = 0;
             gravity = 0.3f;
-            
+            time = 0;
         }
         
     }
