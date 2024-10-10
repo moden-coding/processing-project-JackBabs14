@@ -13,7 +13,7 @@ public class App extends PApplet {
     float speed = 5;
     boolean facingLeft = true;
 
-    float[] bombX = {5, 100, 175, 250, 300, 355, 425, 500, 600, 750, 800}; 
+    float[] bombX = {5, 100, 175, 250, 300, 355, 425, 500, 600, 675, 750}; 
     float[] bombY = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
     float[] verticalSpeed = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
     boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false, false, false};
