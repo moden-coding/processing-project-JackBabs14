@@ -11,25 +11,20 @@ public class App extends PApplet {
     float characterx = 275;
     float charactery = 700 - 150;
     float speed = 5;
+    
     boolean facingLeft = true;
-
-    float[] bombX = {5, 100, 175, 250, 300, 355, 425, 500, 600, 675, 750}; 
-    float[] bombY = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
-    float[] verticalSpeed = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
-    boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false, false, false};
-    boolean[] isBombVisible = {true, true, true, true, true, true, true, true, true, true, true};
-    int[] bombHitGroundTime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int bt1 = 500;
-    int bt2 = 1000;
-    int bt3 = 750;
-    int bt4 = 1100;
-    int bt5 = 2000;
-    int bt6 = 1250;
-    int[] bombResetTimes = {bt1, bt2, bt4, bt6, bt3, bt4, bt5, bt6, bt2, bt1, bt4};
+    float[] bombX = {0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; //5
+    float[] bombY = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+    float[] verticalSpeed = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
+    boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
+    boolean[] isBombVisible = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
+    int[] bombHitGroundTime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int[] bombResetTimes = {500, 1402, 807, 1837, 1053, 2000, 1325, 1837, 807, 1402, 1325, 500, 2000, 1053, 1837, 1402,};
     float gravity = 0.3f;
 
     int gameStartTime = 0;
-    int time = 0;
+    int score = 0;
+    int finalscore = 0;
     int timeThreshold = 7500;
     int timeThreshhold2 = 15000;
     int timeThreshhold3 = 25000;
@@ -57,7 +52,7 @@ public class App extends PApplet {
 
     void runGame() {
 
-        time = (millis() - gameStartTime);
+        
         
         background(150);
         stroke(125);
@@ -134,10 +129,12 @@ public class App extends PApplet {
 
         fill (0);
         textSize(35);
-        text(time, 730, 25);
+        text(score, 730, 25);
 
 
         if (!gameEnded) { 
+            score = (millis() - gameStartTime);
+
             drawCharacter();
             handleCharacterMovement();
 
@@ -150,7 +147,9 @@ public class App extends PApplet {
 
             checkForCollision(); 
         } else {
+            finalscore = score;
             displayGameOver(); 
+
         }
 
     }
@@ -163,13 +162,23 @@ public class App extends PApplet {
             scale(-1, 1);
         }
 
+        stroke(0);
         strokeWeight(4);
-        fill(100);
+        fill(200, 0, 0); 
         rect(-12, 0, 25, 50);
+        strokeWeight(1);
+        fill(2, 113, 72);
+        rect(-12, 35, 25, 15);
+        fill(225);
+        rect(-12, 25, 25, 10);
+        strokeWeight(4);
+        stroke(0);
         fill(228, 185, 142);
         ellipse(0, -18, 36, 36);
         fill(0);
         ellipse(-5, -25, 5, 5);
+        noFill();
+        rect(-12, 0, 25, 50);
 
         popMatrix();
     }
@@ -198,15 +207,23 @@ public class App extends PApplet {
         if (!hasHitGround[index]) {
             verticalSpeed[index] += gravity;
             bombY[index] += verticalSpeed[index];
-
+    
             if (bombY[index] + 15 >= groundLine) {
                 bombY[index] = groundLine - 15;
                 verticalSpeed[index] = 0;
                 hasHitGround[index] = true;
-                isBombVisible[index] = false; 
-                bombHitGroundTime[index] = millis(); 
+                isBombVisible[index] = false;
+                bombHitGroundTime[index] = millis();
             }
         } else {
+            if (score > 15000 && score < 25000) {
+                bombResetTimes[index] = 750 + (index % 7) * 200; 
+                gravity = 0.5f;
+            } else if (score > 25000) {
+                bombResetTimes[index] = 500 + (index % 7) * 150; 
+                gravity = 0.7f;
+            }
+    
             if (millis() - bombHitGroundTime[index] >= bombResetTimes[index]) {
                 resetBomb(index);
             }
@@ -255,6 +272,7 @@ public class App extends PApplet {
                     charactery < bombY[i] + bombHeight &&
                     charactery + characterHeight > bombY[i]) {
                     gameEnded = true; 
+                    
                 }
             }
         }
@@ -267,8 +285,9 @@ public class App extends PApplet {
         textAlign(CENTER);
         textSize(150);
         text("You died!", 400, 300);
-        fill(255);        
-
+        fill(255);
+        textSize(50);
+        text("Your score: " + finalscore, 400, 400);
         textSize(32);
         text("Press Enter to reset", 400, 550);
     }
@@ -311,7 +330,7 @@ public void keyPressed() {
             }
             gameStartTime = 0;
             gravity = 0.3f;
-            time = 0;
+            score = 0;
         }
         
     }
