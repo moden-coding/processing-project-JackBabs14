@@ -19,7 +19,7 @@ public class App extends PApplet {
     boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
     boolean[] isBombVisible = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
     int[] bombHitGroundTime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int[] bombResetTimes = {500, 1402, 807, 1837, 1053, 2000, 1325, 1837, 807, 1402, 1325, 500, 2000, 1053, 1837, 1402,};
+    int[] bombResetTimes = {500, 1402, 807, 1837, 1053, 2000, 1325, 1837, 807, 1402, 1325, 500, 2000, 1053, 1837, 1402};
     float gravity = 0.3f;
 
     int gameStartTime = 0;
