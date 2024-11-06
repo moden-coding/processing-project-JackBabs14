@@ -2,25 +2,29 @@ import processing.core.*;
 
 public class App extends PApplet {
 
+    // Checks to see if game started or ended
     boolean gameStart = false;
     boolean gameEnded = false;
 
-
+// ground line for the character
     float groundLine = 700 - 147 + 45;
 
+    // Starting x and y coords of character
     float characterx = 275;
     float charactery = 700 - 150;
+    
     float speed = 5;
     
     boolean facingLeft = true;
-    float[] bombX = {0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; //5
-    float[] bombY = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+
+    float[] bombX = {0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750}; // needed to set the bomb design across multiple different x axis so I used an array to hold multiple inputs at once without needing so many seperate integers.
+    float[] bombY = {1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000}; // starts all the bombs beneath the screen so they automatically disapear and reset to the begining after the specified delay
     float[] verticalSpeed = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
     boolean[] hasHitGround = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
     boolean[] isBombVisible = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
     int[] bombHitGroundTime = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    int[] bombResetTimes = {500, 1402, 807, 1837, 1053, 2000, 1325, 1837, 807, 1402, 1325, 500, 2000, 1053, 1837, 1402};
-    float gravity = 0.3f;
+    int[] bombResetTimes = {500, 1402, 807, 1837, 1053, 2000, 1325, 1837, 807, 1402, 1325, 500, 2000, 1053, 1837, 1402}; // the amount of time it takes a bomb to reset to the top, avoids using a lot of individual values.
+    float gravity = 0.3f; // double converted to a float with f
 
     int gameStartTime = 0;
     int score = 0;
@@ -42,6 +46,7 @@ public class App extends PApplet {
 
     public void draw() {
 
+        // Game starts at the intro screen, but then goes to run the game
         if (!gameStart) {
             displayIntro();    
         } else {
@@ -53,7 +58,10 @@ public class App extends PApplet {
     void runGame() {
 
         
-        
+        // Chat GPT taught me how to draw irregular shapes using vertex and so I made a background
+        // Started by making all of them rectangles
+        //then edited it to have the cut out shapes to look destroyed
+        // then used vertex to make the lines look more textured
         background(150);
         stroke(125);
         strokeWeight(3);
@@ -127,24 +135,27 @@ public class App extends PApplet {
         vertex(100, 200);
         endShape();
 
+        //chatgpt taught me how to display text, just used it to display the score at a certain location.
         fill (0);
         textSize(35);
         text(score, 730, 25);
 
-
+    
+        //until game ends, tracks score and creates and handles the character
         if (!gameEnded) { 
             score = (millis() - gameStartTime);
 
             drawCharacter();
             handleCharacterMovement();
 
+            // Has the bombs working as expected and draws them on the specified x axis
             for (int i = 0; i < bombX.length; i++) {
                 handleBomb(i);
                 if (isBombVisible[i]) {
                     drawBomb(bombX[i], bombY[i]);
                 }
             }
-
+            //if the bomb hits the player, game over, score is finalized, and goes to end screen
             checkForCollision(); 
         } else {
             finalscore = score;
@@ -153,7 +164,10 @@ public class App extends PApplet {
         }
 
     }
-
+// Here I used some basic shapes to draw the character, but chat gpt told me how to make it face different derections
+// translate sets the starting characterx and character why as 0,0
+// Push/Pop Matrix set the character as its own unique entity in the screen that is not part of the background so different commands can be done to it without affecting the background.
+//Scale inverts the drawing along the verticle middle so it is facing the other direction
     void drawCharacter() {
         pushMatrix();
         translate(characterx, charactery);
@@ -183,6 +197,7 @@ public class App extends PApplet {
         popMatrix();
     }
 
+    // Sets the keys to control the x of the characer making him move left and right by the speed amount; Keys also determin which way he is facing
     void handleCharacterMovement() {
         if (keyPressed) {
             if (key == 'a' || key == 'A' || keyCode == LEFT) {
@@ -194,7 +209,7 @@ public class App extends PApplet {
                 facingLeft = false;
             }
         }
-
+        //sets a wall so the character can't leave the screen
         if (characterx < 0) {
             characterx = 0;
         }
@@ -203,6 +218,8 @@ public class App extends PApplet {
         }
     }
 
+    // all the # of bombs start off not having hit ground, whil they dont hit the ground, their y axis goes down by the gravity ammount
+    // Knows when the bomb has hit the ground and makes the bomb invisable and waits the time specified earlier before it reappears at the top, 
     void handleBomb(int index) {
         if (!hasHitGround[index]) {
             verticalSpeed[index] += gravity;
@@ -215,7 +232,7 @@ public class App extends PApplet {
                 isBombVisible[index] = false;
                 bombHitGroundTime[index] = millis();
             }
-        } else {
+        } else { // after a certain amount of time since game started, bombs fall faster and their reset time shrinks proportionally to thier initial reset time
             if (score > 15000 && score < 25000) {
                 bombResetTimes[index] = 750 + (index % 7) * 200; 
                 gravity = 0.5f;
@@ -223,13 +240,15 @@ public class App extends PApplet {
                 bombResetTimes[index] = 500 + (index % 7) * 150; 
                 gravity = 0.7f;
             }
-    
+            //resets the bomb after it waited its designated time
             if (millis() - bombHitGroundTime[index] >= bombResetTimes[index]) {
                 resetBomb(index);
             }
         }
     }
-
+// sets the bomb index all to zero for each restart (necesarry because it starts at 1000 and it moves down throughout the game)
+// resets the speed
+//makes the bomb visible and no longer having the status of hit the ground
     void resetBomb(int index) {
         bombY[index] = 0;
         verticalSpeed[index] = 0;
@@ -241,10 +260,13 @@ public class App extends PApplet {
         fill(142);
         rect(x, y, 50, 15);
 
+        // Chat gpt taught me how to use arc for making ovals and partial ovals instead of just circles
         float arcCenterX = x + 25;
         float arcCenterY = y + 15 + 10;
+        //draws bottom of bomb
         arc(arcCenterX, arcCenterY, 40, 150, 0, PI);
 
+        //draws top of bomb
         beginShape();
         stroke(142);
         vertex(x + 5, y + 25);
@@ -253,20 +275,24 @@ public class App extends PApplet {
         vertex(x + 45, y + 25);
         endShape(CLOSE);
 
+        //line to connect the two
         stroke(0);
         line(x + 15, y + 15, x + 5, y + 25);
         line(x + 35, y + 15, x + 45, y + 25);
     }
 
     void checkForCollision() {
+        //hight and width of character identified
         float characterWidth = 25;
         float characterHeight = 50;
 
+        //while the bomb is visable, it is length and width is defined
         for (int i = 0; i < bombX.length; i++) {
             if (isBombVisible[i]) {
                 float bombWidth = 50;
                 float bombHeight = 15;
 
+                // if the bomb x or y distance from bomb center gets within the character x or y disctance from character center (bomb touches character) --> character dies
                 if (characterx < bombX[i] + bombWidth &&
                     characterx + characterWidth > bombX[i] &&
                     charactery < bombY[i] + bombHeight &&
@@ -278,6 +304,7 @@ public class App extends PApplet {
         }
     }
 
+    // game over screen, chat gpt taught how to center text
     void displayGameOver() {
         background (0);
 
@@ -291,7 +318,7 @@ public class App extends PApplet {
         textSize(32);
         text("Press Enter to reset", 400, 550);
     }
-
+// begining screen
 void displayIntro() {
     background(0);
 
@@ -308,12 +335,13 @@ void displayIntro() {
 }
 
 public void keyPressed() {
-
+// If the game isnt over and the enter key is pressed, it starts the game and starts the timer.
     if (keyCode == ENTER  && !gameEnded) {
             gameStart = true;
             gameStartTime = millis();
         }
-
+        
+        // If enter is pressed and the game is over, it resets the game and character and score and bomb starting positions and speed and takes us back to intro screen
         if (keyCode == ENTER && gameEnded == true) {
             gameEnded = false;
             gameStart = false;
